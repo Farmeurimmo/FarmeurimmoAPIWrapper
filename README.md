@@ -8,7 +8,7 @@ This is a wrapper of my api for my minecraft server. (mc.farmeurimmo.fr)
 <repository>
     <id>repo-farmeurimmo</id>
     <name>Maven Repository Farmeurimmo</name>
-    <url>https://repo.farmeurimmo.fr/<repository></url>
+    <url>https://repo.farmeurimmo.fr/</url>
 </repository>
 ```
 
