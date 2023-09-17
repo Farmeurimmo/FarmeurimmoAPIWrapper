@@ -9,24 +9,22 @@ import java.util.concurrent.CompletableFuture;
 public class UsersManager {
 
     public static CompletableFuture<User> getUser(UUID uuid) {
-        CompletableFuture.supplyAsync(() -> {
+        return CompletableFuture.supplyAsync(() -> {
             CompletableFuture<JsonObject> json = Requester.getAsync("user/" + uuid.toString());
             return parse(json.join());
         });
-        return null;
     }
 
     public static CompletableFuture<User> getUserOrCreate(UUID uuid, String name) {
-        CompletableFuture.supplyAsync(() -> {
-            CompletableFuture<JsonObject> json = Requester.getAsync("user/" + uuid.toString());
-            User user = parse(json.join());
+        return CompletableFuture.supplyAsync(() -> {
+            JsonObject json = Requester.getAsync("user/" + uuid.toString()).join();
+            User user = parse(json);
             if (user == null) {
                 user = new User(uuid, name);
                 updateUser(user);
             }
             return user;
         });
-        return null;
     }
 
     private static User parse(JsonObject json) {
