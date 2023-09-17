@@ -5,6 +5,14 @@ This is a wrapper of my api for my minecraft server. (mc.farmeurimmo.fr)
 ## Installation
 
 ```xml
+<repository>
+    <id>repo-farmeurimmo</id>
+    <name>Maven Repository Farmeurimmo</name>
+    <url>https://repo.farmeurimmo.fr/<repository></url>
+</repository>
+```
+
+```xml
 <dependency>
   <groupId>fr.farmeurimmo</groupId>
   <artifactId>FarmeurimmoAPIWrapper</artifactId>
