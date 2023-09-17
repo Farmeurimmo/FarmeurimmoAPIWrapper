@@ -1,5 +1,7 @@
 # FarmeurimmoAPIWrapper
 
+This is a wrapper of my api for my minecraft server. (mc.farmeurimmo.fr)
+
 ## Installation
 
 ```xml
