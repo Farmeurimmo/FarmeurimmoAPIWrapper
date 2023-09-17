@@ -21,7 +21,8 @@ public class Requester {
         return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenApply(HttpResponse::body)
                 .thenApply(JsonParser::parseString)
-                .thenApply(JsonObject.class::cast);
+                .thenApply(JsonObject.class::cast)
+                .exceptionally(e -> null);
     }
 
     public static void postAsync(String endpoint, JsonObject json) {
@@ -34,6 +35,7 @@ public class Requester {
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenApply(HttpResponse::body)
                 .thenApply(JsonParser::parseString)
-                .thenApply(JsonObject.class::cast);
+                .thenApply(JsonObject.class::cast)
+                .exceptionally(e -> null);
     }
 }
