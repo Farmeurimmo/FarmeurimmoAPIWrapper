@@ -6,11 +6,11 @@ public class User {
 
     private final UUID uuid;
     private final String name;
+    private final long firstSeen;
     private String discordId;
     private String displayName;
     private double fame;
     private long lastSeen;
-    private final long firstSeen;
     private long playTime;
 
     public User(UUID uuid, String name, String discordId, String displayName, double fame, long lastSeen, long firstSeen, long playTime) {
@@ -46,12 +46,24 @@ public class User {
         return displayName;
     }
 
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     public double getFame() {
         return fame;
     }
 
+    public void setFame(double fame) {
+        this.fame = fame;
+    }
+
     public long getLastSeen() {
         return lastSeen;
+    }
+
+    public void setLastSeen(long lastSeen) {
+        this.lastSeen = lastSeen;
     }
 
     public long getFirstSeen() {
@@ -60,18 +72,6 @@ public class User {
 
     public long getPlayTime() {
         return playTime;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public void setFame(double fame) {
-        this.fame = fame;
-    }
-
-    public void setLastSeen(long lastSeen) {
-        this.lastSeen = lastSeen;
     }
 
     public void setPlayTime(long playTime) {

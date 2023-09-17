@@ -4,12 +4,32 @@ import com.google.gson.JsonObject;
 import fr.farmeurimmo.Requester;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class UsersManager {
 
-    public static User getUser(UUID uuid) {
-        JsonObject json = Requester.getAsync("user/" + uuid.toString()).join();
+    public static CompletableFuture<User> getUser(UUID uuid) {
+        CompletableFuture.supplyAsync(() -> {
+            CompletableFuture<JsonObject> json = Requester.getAsync("user/" + uuid.toString());
+            return parse(json.join());
+        });
+        return null;
+    }
 
+    public static CompletableFuture<User> getUserOrCreate(UUID uuid, String name) {
+        CompletableFuture.supplyAsync(() -> {
+            CompletableFuture<JsonObject> json = Requester.getAsync("user/" + uuid.toString());
+            User user = parse(json.join());
+            if (user == null) {
+                user = new User(uuid, name);
+                updateUser(user);
+            }
+            return user;
+        });
+        return null;
+    }
+
+    private static User parse(JsonObject json) {
         if (json == null) return null;
 
         UUID id = json.has("id") ? UUID.fromString(json.get("id").getAsString()) : null;
@@ -37,14 +57,5 @@ public class UsersManager {
         json.addProperty("playTime", user.getPlayTime());
 
         Requester.postAsync("user/" + user.getUUID().toString(), json);
-    }
-
-    public static User getOrCreate(UUID uuid, String name) {
-        User user = getUser(uuid);
-        if (user == null) {
-            user = new User(uuid, name);
-            updateUser(user);
-        }
-        return user;
     }
 }

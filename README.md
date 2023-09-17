@@ -5,6 +5,7 @@ This is a wrapper of my api for my minecraft server. (mc.farmeurimmo.fr)
 ## Installation
 
 ```xml
+
 <repository>
     <id>repo-farmeurimmo</id>
     <name>Maven Repository Farmeurimmo</name>
@@ -13,9 +14,10 @@ This is a wrapper of my api for my minecraft server. (mc.farmeurimmo.fr)
 ```
 
 ```xml
+
 <dependency>
-  <groupId>fr.farmeurimmo</groupId>
-  <artifactId>FarmeurimmoAPIWrapper</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+    <groupId>fr.farmeurimmo</groupId>
+    <artifactId>FarmeurimmoAPIWrapper</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
