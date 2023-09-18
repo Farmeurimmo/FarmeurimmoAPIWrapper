@@ -29,6 +29,7 @@ public class Requester {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(java.net.URI.create(URL + endpoint))
+                .header("X-API-Key", System.getenv("AUTH_KEY"))
                 .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
                 .build();
 
