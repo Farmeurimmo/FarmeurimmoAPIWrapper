@@ -10,7 +10,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class Requester {
 
-    private static final String URL = "https://api.farmeurimmo.fr/mc/";
+    private final static String API_VERSION = "v1";
+    private static final String URL = "https://api.farmeurimmo.fr/" + API_VERSION + "/mc/";
 
     public static CompletableFuture<JsonObject> getAsync(String endpoint) {
         HttpClient client = HttpClient.newHttpClient();
