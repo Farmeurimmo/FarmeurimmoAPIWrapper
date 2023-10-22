@@ -32,7 +32,8 @@ public class UsersManager {
 
         UUID id = json.has("id") ? UUID.fromString(json.get("id").getAsString()) : null;
         String name = json.has("name") ? json.get("name").getAsString() : null;
-        String discordId = json.has("discordId") ? json.get("discordId").getAsString() : null;
+        String discordId = json.has("discordId") ? (json.get("discordId").isJsonNull() ? null :
+                json.get("discordId").getAsString()) : null;
         String displayName = json.has("displayName") ? json.get("displayName").getAsString() : null;
         double fame = json.has("fame") ? json.get("fame").getAsDouble() : 0;
         long lastSeen = json.has("lastSeen") ? json.get("lastSeen").getAsLong() : 0;
