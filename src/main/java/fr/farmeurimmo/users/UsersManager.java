@@ -1,6 +1,8 @@
 package fr.farmeurimmo.users;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import fr.farmeurimmo.Requester;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ public class UsersManager {
 
     public static User getCachedUser(UUID uuid) {
         for (User user : users.keySet()) {
+            if (user == null) continue;
+            if (user.getUUID() == null) continue;
             if (user.getUUID().equals(uuid)) {
                 return user;
             }
@@ -37,7 +41,7 @@ public class UsersManager {
             requests.put(uuid, System.currentTimeMillis());
             CompletableFuture<JsonObject> json = Requester.getAsync("user/" + uuid.toString());
             user = parse(json.join());
-            if (user != null) users.put(user, System.currentTimeMillis());
+            if (user.getUUID() != null) users.put(user, System.currentTimeMillis());
             return user;
         });
     }
@@ -51,7 +55,7 @@ public class UsersManager {
             requests.put(uuid, System.currentTimeMillis());
             JsonObject json = Requester.getAsync("user/" + uuid.toString()).join();
             user = parse(json);
-            if (user == null) {
+            if (user.getUUID() == null) {
                 user = new User(uuid, name);
                 updateUser(user);
             }
@@ -66,9 +70,18 @@ public class UsersManager {
             JsonObject json = Requester.getAsync("users").join();
             if (json == null) return users;
 
-            for (int i = 0; i < json.get("users").getAsJsonArray().size(); i++) {
-                users.add(parse(json.get("users").getAsJsonArray().get(i).getAsJsonObject()));
+            JsonObject usersJson = json.get("users").getAsJsonObject();
+            if (usersJson == null) return users;
+
+            for (String uuid : usersJson.keySet()) {
+                JsonElement userJson = usersJson.get(uuid);
+                if (userJson == null) continue;
+                JsonObject jsonObject = new JsonParser().parse(userJson.getAsString()).getAsJsonObject();
+                if (jsonObject == null) continue;
+                User user = parse(jsonObject);
+                if (user != null) users.add(user);
             }
+
             return users;
         });
     }
