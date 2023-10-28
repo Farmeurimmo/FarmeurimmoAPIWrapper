@@ -3,15 +3,33 @@ package fr.farmeurimmo.users;
 import com.google.gson.JsonObject;
 import fr.farmeurimmo.Requester;
 
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class UsersManager {
 
+    private static final HashMap<User, Long> users = new HashMap<>();
+
+    public static User getCachedUser(UUID uuid) {
+        for (User user : users.keySet()) {
+            if (user.getUUID().equals(uuid)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public static long getLastGotUser(User user) {
+        return users.get(user);
+    }
+
     public static CompletableFuture<User> getUser(UUID uuid) {
         return CompletableFuture.supplyAsync(() -> {
             CompletableFuture<JsonObject> json = Requester.getAsync("user/" + uuid.toString());
-            return parse(json.join());
+            User user = parse(json.join());
+            if (user != null) users.put(user, System.currentTimeMillis());
+            return user;
         });
     }
 
@@ -23,6 +41,7 @@ public class UsersManager {
                 user = new User(uuid, name);
                 updateUser(user);
             }
+            users.put(user, System.currentTimeMillis());
             return user;
         });
     }
@@ -40,7 +59,9 @@ public class UsersManager {
         long firstSeen = json.has("firstSeen") ? json.get("firstSeen").getAsLong() : 0;
         long playTime = json.has("playTime") ? json.get("playTime").getAsLong() : 0;
 
-        return new User(id, name, discordId, displayName, fame, lastSeen, firstSeen, playTime);
+        User user = new User(id, name, discordId, displayName, fame, lastSeen, firstSeen, playTime);
+        users.put(user, System.currentTimeMillis());
+        return user;
     }
 
     public static void updateUser(User user) {
